@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro para notificaciones</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="registro-body">
+  
+  <!-- Banner decorativo -->
+  <div class="banner-registro">
+    <img src="{{ url_for('static', filename='IMG_0469.jpeg') }}" alt="Banner Universidad">
+  </div>
+
+  <div class="formulario">
+    <h2>Registrarme para recibir alertas</h2>
+    <form action="/registrar" method="POST">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" name="nombre" required>
+
+      <label for="correo">Correo institucional:</label>
+      <input type="email" name="correo" required>
+
+      <label for="genero">Género:</label>
+      <select name="genero" required>
+        <option value="Femenino">Femenino</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Otro">Otro / Prefiero no decir</option>
+      </select>
+
+      <label>Zonas que frecuentas:</label><br />
+      <input type="checkbox" name="zona" value="Biblioteca General"> Biblioteca General<br />
+      <input type="checkbox" name="zona" value="Cafetería Central"> Cafetería Central<br />
+      <input type="checkbox" name="zona" value="SD"> SD<br />
+      <input type="checkbox" name="zona" value="ML"> ML<br />
+      <input type="checkbox" name="zona" value="N"> N<br />
+      <input type="checkbox" name="zona" value="O"> O<br />
+      <input type="checkbox" name="zona" value="Q"> Q<br />
+      <input type="checkbox" name="zona" value="R"> R<br />
+      <input type="checkbox" name="zona" value="S"> S<br />
+      <input type="checkbox" name="zona" value="S1"> S1<br />
+      <input type="checkbox" name="zona" value="TX"> TX<br />
+      <input type="checkbox" name="zona" value="W"> W<br /><br />
+
+      <label>¿Qué tipo de objetos te interesan recuperar?</label><br />
+      <input type="checkbox" name="interes" value="Electrónicos"> Electrónicos<br />
+      <input type="checkbox" name="interes" value="Ropa"> Ropa<br />
+      <input type="checkbox" name="interes" value="Accesorios"> Accesorios<br />
+      <input type="checkbox" name="interes" value="Libros/Apuntes"> Libros / Apuntes<br /><br />
+
+      <label><input type="checkbox" name="acepta" required> Acepto recibir correos con notificaciones</label><br /><br />
+
+      <button type="submit">Registrarme</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reportar objeto perdido</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="formulario">
+    <h2>Reportar objeto encontrado</h2>
+    <p>Describe el objeto que encontraste para que podamos notificar a su posible dueño.</p>
+
+    <form action="/reportar" method="POST" enctype="multipart/form-data">
+      <label for="tipo">Tipo de objeto:</label>
+      <select id="tipo" name="tipo" required>
+        <option value="" disabled selected>Selecciona el tipo</option>
+        <option value="Electrónicos">Electrónicos</option>
+        <option value="Ropa">Ropa</option>
+        <option value="Accesorios">Accesorios</option>
+        <option value="Documentos">Documentos</option>
+        <option value="Libros/Apuntes">Libros / Apuntes</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" name="descripcion" rows="4" placeholder="Color, marca, estado..." required></textarea>
+
+      <label for="ubicacion">Lugar donde se encontró:</label>
+      <select id="ubicacion" name="ubicacion" required>
+        <option value="" disabled selected>Selecciona el lugar</option>
+        <option value="Biblioteca General">Biblioteca General</option>
+        <option value="Cafetería Central">Cafetería Central</option>
+        <option value="SD">Edificio SD</option>
+        <option value="ML">Edificio ML</option>
+        <option value="N">Edificio N</option>
+        <option value="O">Edificio O</option>
+        <option value="Q">Edificio Q</option>
+        <option value="R">Edificio R</option>
+        <option value="S">Edificio S</option>
+        <option value="S1">Edificio S1</option>
+        <option value="TX">Edificio TX</option>
+        <option value="W">Edificio W</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" name="fecha" required>
+
+      <label for="hora">Hora:</label>
+      <input type="time" id="hora" name="hora">
+
+      <label for="foto">Foto (opcional):</label>
+      <input type="file" id="foto" name="foto" accept="image/*">
+
+      <button type="submit">Enviar reporte</button>
+    </form>
+  </div>
+</body>
+</html>

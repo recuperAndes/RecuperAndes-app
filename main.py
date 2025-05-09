@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 
 # Configuración Google Sheets
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-credenciales = Credentials.from_service_account_file("recuperandes-558ed1af7700.json", scopes=scope)
+credenciales = Credentials.from_service_account_file("/etc/secrets/recuperandes-558ed1af7700.json", scopes=scope)
 cliente = gspread.authorize(credenciales)
 
 hoja_objetos = cliente.open("Objetos_Reportados_RecuperAndes").sheet1

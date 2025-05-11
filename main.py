@@ -93,6 +93,40 @@ def registrar_estudiante():
     enviar_correo_confirmacion(nombre, correo)
     return "¡Registro exitoso!"
 
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+import tempfile
+
+# ID real de la carpeta donde se subirán las fotos en tu Google Drive
+carpeta_id = "TU_CARPETA_ID"
+
+def subir_imagen_a_drive(nombre_archivo, archivo_stream, carpeta_id):
+    servicio = build("drive", "v3", credentials=credenciales)
+
+    # Guardar el archivo temporalmente
+    temp = tempfile.NamedTemporaryFile(delete=False)
+    archivo_stream.save(temp.name)
+
+    media = MediaFileUpload(temp.name, resumable=True)
+    metadata = {
+        "name": nombre_archivo,
+        "parents": [carpeta_id]
+    }
+
+    archivo = servicio.files().create(
+        body=metadata,
+        media_body=media,
+        fields="id"
+    ).execute()
+
+    # Hacer público el archivo
+    servicio.permissions().create(
+        fileId=archivo["id"],
+        body={"role": "reader", "type": "anyone"}
+    ).execute()
+
+    return f"https://drive.google.com/uc?export=view&id={archivo['id']}"
+
 # Enviar correo
 def enviar_correo_confirmacion(nombre, destinatario):
     emisor = "recuperandes@gmail.com"

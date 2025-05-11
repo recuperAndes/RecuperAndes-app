@@ -38,14 +38,17 @@ def mostrar_galeria():
     objetos = []
 
     for fila in filas[1:]:  # Saltar encabezado
-        tipo, descripcion, lugar, fecha, hora, foto = fila
+        if len(fila) < 7:
+            continue  # Saltar si no tiene imagen aún
+
+        tipo, descripcion, lugar, fecha, hora, _, foto = fila
         objetos.append({
             "tipo": tipo,
             "descripcion": descripcion,
             "lugar": lugar,
             "fecha": fecha,
             "hora": hora,
-            "foto": foto if foto != "Sin foto" else "https://via.placeholder.com/250x180.png?text=Sin+foto"
+            "foto": foto if foto.strip() else "https://via.placeholder.com/250x180.png?text=Sin+foto"
         })
 
     return render_template("galeria_perdidos.html", objetos=objetos)

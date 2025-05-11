@@ -114,7 +114,7 @@ def recibir_reporte():
         genero_objeto
     ])
 
-    notificar_estudiantes_si_coincide(tipo, lugar, genero_objeto)
+    notificar_estudiantes_si_coincide(tipo, lugar, genero_objeto, enlace_foto)
     return "¡Reporte recibido correctamente!"
 
 @app.route("/registrar", methods=["POST"])
@@ -164,7 +164,7 @@ def enviar_correo_confirmacion(nombre, destinatario):
         servidor.send_message(mensaje)
 
 # Función para enviar notificaciones si hay coincidencias
-def notificar_estudiantes_si_coincide(tipo, lugar, genero_estimado):
+def notificar_estudiantes_si_coincide(tipo, lugar, genero_estimado, foto_url):
     registros = hoja_registro.get_all_records()
     for registro in registros:
         correo = registro.get("Correo Institucional", "").strip()
@@ -190,33 +190,33 @@ def notificar_estudiantes_si_coincide(tipo, lugar, genero_estimado):
             continue
 
         # Si cumple todo, enviar correo
-        enviar_correo_aviso(correo, tipo, lugar)
+        enviar_correo_aviso(correo, tipo, lugar, foto_url)
 
 # Función para enviar el correo de aviso de coincidencia
-def enviar_correo_aviso(destinatario, tipo, lugar):
+def enviar_correo_aviso(destinatario, tipo, lugar, foto_url):
     emisor = "recuperandes@gmail.com"
     clave = "sfesfddxvfjkvomc"
 
-    mensaje = MIMEMultipart()
+    mensaje = MIMEMultipart("alternative")
     mensaje["From"] = emisor
     mensaje["To"] = destinatario
     mensaje["Subject"] = "¡Nuevo objeto perdido que puede ser tuyo!"
 
-    cuerpo = f"""
-    Hola,
-
-    Se ha reportado un objeto del tipo "{tipo}" en el lugar "{lugar}", que coincide con tus intereses y zonas frecuentadas.
-
-    Puedes revisarlo en la galería de objetos perdidos de RecuperAndes:
-    https://recuperandes-app.onrender.com/galeria
-
-    o Acercarte al punto físico de nuestra universidad, en el edificio ML.
-
-    ¡Esperamos que sea tuyo!
-
-    - Equipo RecuperAndes
+    html = f"""
+    <html>
+      <body>
+        <p>Hola,</p>
+        <p>Se ha reportado un objeto del tipo <strong>{tipo}</strong> en el lugar <strong>{lugar}</strong>, que coincide con tus intereses y zonas frecuentadas.</p>
+        <p>Puedes revisarlo en la <a href="https://recuperandes-app.onrender.com/galeria">galería de objetos perdidos</a> o acercarte al punto físico en el edificio ML.</p>
+        <p><strong>Imagen del objeto:</strong></p>
+        <img src="{foto_url}" alt="Objeto perdido" style="max-width:400px; border-radius:10px;">
+        <p>¡Esperamos que sea tuyo!</p>
+        <p>— Equipo RecuperAndes</p>
+      </body>
+    </html>
     """
-    mensaje.attach(MIMEText(cuerpo, "plain"))
+
+    mensaje.attach(MIMEText(html, "html"))
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
         servidor.login(emisor, clave)

@@ -61,9 +61,14 @@ def recibir_reporte():
     lugar = request.form.get("ubicacion")
     fecha = request.form.get("fecha")
     hora = request.form.get("hora")
-    foto = request.form.get("foto") or "Sin foto"
 
-    hoja_objetos.append_row([tipo, descripcion, lugar, fecha, hora, foto])
+    archivo = request.files.get("foto")
+    if archivo and archivo.filename:
+        enlace_foto = subir_imagen_a_drive(archivo.filename, archivo, carpeta_id)
+    else:
+        enlace_foto = "https://via.placeholder.com/250x180.png?text=Sin+foto"
+
+    hoja_objetos.append_row([tipo, descripcion, lugar, fecha, hora, "archivo", enlace_foto])
     return "¡Reporte recibido correctamente!"
 
 # Guardar registro de estudiante

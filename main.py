@@ -113,6 +113,8 @@ def recibir_reporte():
         enlace_foto,
         genero_objeto
     ])
+
+    notificar_estudiantes_si_coincide(tipo, lugar, genero_objeto)
     return "¡Reporte recibido correctamente!"
 
 @app.route("/registrar", methods=["POST"])

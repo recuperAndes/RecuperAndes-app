@@ -98,7 +98,7 @@ from googleapiclient.http import MediaFileUpload
 import tempfile
 
 # ID real de la carpeta donde se subirán las fotos en tu Google Drive
-carpeta_id = "TU_CARPETA_ID"
+carpeta_id = "1baKpSUxvWnHSkChIII1IK06P4rQc-_vN"
 
 def subir_imagen_a_drive(nombre_archivo, archivo_stream, carpeta_id):
     servicio = build("drive", "v3", credentials=credenciales)

@@ -95,6 +95,7 @@ def recibir_reporte():
     lugar = request.form.get("ubicacion")
     fecha = request.form.get("fecha")
     hora = request.form.get("hora")
+    genero_objeto = request.form.get("genero_objeto") or "No especificado"
 
     archivo = request.files.get("foto")
     if archivo and archivo.filename:
@@ -102,7 +103,16 @@ def recibir_reporte():
     else:
         enlace_foto = "https://via.placeholder.com/250x180.png?text=Sin+foto"
 
-    hoja_objetos.append_row([tipo, descripcion, lugar, fecha, hora, "archivo", enlace_foto])
+    hoja_objetos.append_row([
+        tipo,
+        descripcion,
+        lugar,
+        fecha,
+        hora,
+        "archivo",
+        enlace_foto,
+        genero_objeto
+    ])
     return "¡Reporte recibido correctamente!"
 
 @app.route("/registrar", methods=["POST"])

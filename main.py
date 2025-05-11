@@ -38,10 +38,16 @@ def mostrar_galeria():
     objetos = []
 
     for fila in filas[1:]:  # Saltar encabezado
-        if len(fila) < 7:
-            continue  # Saltar si no tiene imagen aún
+        if len(fila) < 8:
+            continue  # Saltar si no tiene todas las columnas
 
-        tipo, descripcion, lugar, fecha, hora, _, foto = fila
+        tipo = fila[0]
+        descripcion = fila[1]
+        lugar = fila[2]
+        fecha = fila[3]
+        hora = fila[4]
+        foto = fila[7]  # Columna H = índice 7
+
         objetos.append({
             "tipo": tipo,
             "descripcion": descripcion,

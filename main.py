@@ -160,3 +160,62 @@ def enviar_correo_confirmacion(nombre, destinatario):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
         servidor.login(emisor, clave)
         servidor.send_message(mensaje)
+
+# Función para enviar notificaciones si hay coincidencias
+def notificar_estudiantes_si_coincide(tipo, lugar, genero_estimado):
+    registros = hoja_registro.get_all_records()
+    for registro in registros:
+        correo = registro.get("Correo Institucional", "").strip()
+        genero_estudiante = registro.get("Género", "").strip()
+        zonas = registro.get("Zonas que frecuenta", "").upper().split(", ")
+        intereses = registro.get("Categorías de interés", "").split(", ")
+        acepta = registro.get("Acepta notificaciones", "No").strip().lower()
+
+        # Verificar si acepta notificaciones
+        if acepta != "on":
+            continue
+
+        # Verificar coincidencia por lugar
+        if lugar not in zonas:
+            continue
+
+        # Verificar coincidencia por categoría de objeto
+        if tipo not in intereses:
+            continue
+
+        # Verificar coincidencia de género si se conoce
+        if genero_estimado and genero_estimado != "No estoy seguro" and genero_estimado != genero_estudiante:
+            continue
+
+        # Si cumple todo, enviar correo
+        enviar_correo_aviso(correo, tipo, lugar)
+
+# Función para enviar el correo de aviso de coincidencia
+def enviar_correo_aviso(destinatario, tipo, lugar):
+    emisor = "recuperandes@gmail.com"
+    clave = "sfesfddxvfjkvomc"
+
+    mensaje = MIMEMultipart()
+    mensaje["From"] = emisor
+    mensaje["To"] = destinatario
+    mensaje["Subject"] = "¡Nuevo objeto perdido que puede ser tuyo!"
+
+    cuerpo = f"""
+    Hola,
+
+    Se ha reportado un objeto del tipo "{tipo}" en el lugar "{lugar}", que coincide con tus intereses y zonas frecuentadas.
+
+    Puedes revisarlo en la galería de objetos perdidos de RecuperAndes:
+    https://recuperandes-app.onrender.com/galeria
+
+    o Acercarte al punto físico de nuestra universidad, en el edificio ML.
+
+    ¡Esperamos que sea tuyo!
+
+    - Equipo RecuperAndes
+    """
+    mensaje.attach(MIMEText(cuerpo, "plain"))
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
+        servidor.login(emisor, clave)
+        servidor.send_message(mensaje)
